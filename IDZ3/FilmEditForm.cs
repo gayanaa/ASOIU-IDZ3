@@ -8,7 +8,7 @@ namespace IDZ3
     public partial class FilmEditForm : Form
     {
         private int? _editFilmId;
-        private List<Studio> _studios;
+        private System.Collections.Generic.List<Studio> _studios;
 
         public string FilmTitle => txtTitle.Text.Trim();
         public decimal BudgetMln => numBudget.Value;
@@ -43,6 +43,7 @@ namespace IDZ3
 
         private void btnOk_Click(object sender, EventArgs e)
         {
+            // Проверка 1: название не пустое
             if (string.IsNullOrWhiteSpace(txtTitle.Text))
             {
                 MessageBox.Show("Введите название фильма!", "Ошибка",
@@ -50,6 +51,7 @@ namespace IDZ3
                 return;
             }
 
+            // Проверка 2: бюджет не отрицательный
             if (numBudget.Value < 0)
             {
                 MessageBox.Show("Бюджет не может быть отрицательным!", "Ошибка",
@@ -57,6 +59,16 @@ namespace IDZ3
                 return;
             }
 
+            // Проверка 3: бюджет не превышает 500 млн
+            if (numBudget.Value > 500)
+            {
+                MessageBox.Show("Бюджет не может превышать 500 миллионов долларов!\n" +
+                    "Пожалуйста, введите корректное значение.", "Ошибка",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Проверка 4: выбрана студия
             if (cmbStudio.SelectedItem == null)
             {
                 MessageBox.Show("Выберите киностудию!", "Ошибка",
