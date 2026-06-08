@@ -11,15 +11,31 @@ namespace IDZ3
         public FilmsForm()
         {
             InitializeComponent();
-            LoadData();
+            LoadData("");
         }
 
-        private void LoadData()
+        /// <summary>
+        /// Загружает фильмы из базы данных.
+        /// Если передан поисковый запрос, фильтрует по названию.
+        /// </summary>
+        /// <param name="searchText">Текст для поиска (регистр не важен)</param>
+        private void LoadData(string searchText)
         {
             using (var context = new AppDbContext())
             {
-                var films = context.Films
+                // Базовый запрос
+                var query = context.Films
                     .Include(f => f.Studio)
+                    .AsQueryable();
+
+                // Если есть текст поиска - фильтруем
+                if (!string.IsNullOrWhiteSpace(searchText))
+                {
+                    query = query.Where(f => f.Title.ToLower().Contains(searchText.ToLower()));
+                }
+
+                // Выполняем запрос
+                var films = query
                     .OrderBy(f => f.Id)
                     .Select(f => new
                     {
@@ -32,6 +48,7 @@ namespace IDZ3
 
                 dgvFilms.DataSource = films;
 
+                // Настройка заголовков столбцов
                 if (dgvFilms.Columns.Contains("Id"))
                     dgvFilms.Columns["Id"].HeaderText = "№";
                 if (dgvFilms.Columns.Contains("Title"))
@@ -41,6 +58,24 @@ namespace IDZ3
                 if (dgvFilms.Columns.Contains("Киностудия"))
                     dgvFilms.Columns["Киностудия"].HeaderText = "Киностудия";
             }
+        }
+
+        /// <summary>
+        /// Обработчик изменения текста в поле поиска.
+        /// Каждое нажатие клавиши обновляет таблицу.
+        /// </summary>
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            LoadData(txtSearch.Text);
+        }
+
+        /// <summary>
+        /// Очищает поле поиска и показывает все фильмы.
+        /// </summary>
+        private void btnClearSearch_Click(object sender, EventArgs e)
+        {
+            txtSearch.Text = "";
+            LoadData("");
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -58,7 +93,7 @@ namespace IDZ3
                     };
                     context.Films.Add(film);
                     context.SaveChanges();
-                    LoadData();
+                    LoadData(txtSearch.Text);
                 }
             }
         }
@@ -87,7 +122,7 @@ namespace IDZ3
                     film.BudgetMln = form.BudgetMln;
                     film.StudioId = form.SelectedStudioId;
                     context.SaveChanges();
-                    LoadData();
+                    LoadData(txtSearch.Text);
                 }
             }
         }
@@ -116,7 +151,7 @@ namespace IDZ3
                     {
                         context.Films.Remove(film);
                         context.SaveChanges();
-                        LoadData();
+                        LoadData(txtSearch.Text);
                     }
                 }
             }
