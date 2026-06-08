@@ -8,55 +8,58 @@ namespace IDZ3
 {
     public partial class FilmsForm : Form
     {
-        private AppDbContext _context;
-
         public FilmsForm()
         {
             InitializeComponent();
-            _context = new AppDbContext();
             LoadData();
         }
 
         private void LoadData()
         {
-            var films = _context.Films
-                .Include(f => f.Studio)
-                .OrderBy(f => f.Id)
-                .Select(f => new
-                {
-                    f.Id,
-                    f.Title,
-                    Бюджет_млн = f.BudgetMln,
-                    Киностудия = f.Studio != null ? f.Studio.Name : "—"
-                })
-                .ToList();
+            using (var context = new AppDbContext())
+            {
+                var films = context.Films
+                    .Include(f => f.Studio)
+                    .OrderBy(f => f.Id)
+                    .Select(f => new
+                    {
+                        f.Id,
+                        f.Title,
+                        Бюджет_млн = f.BudgetMln,
+                        Киностудия = f.Studio != null ? f.Studio.Name : "—"
+                    })
+                    .ToList();
 
-            dgvFilms.DataSource = films;
+                dgvFilms.DataSource = films;
 
-            if (dgvFilms.Columns.Contains("Id"))
-                dgvFilms.Columns["Id"].HeaderText = "№";
-            if (dgvFilms.Columns.Contains("Title"))
-                dgvFilms.Columns["Title"].HeaderText = "Название фильма";
-            if (dgvFilms.Columns.Contains("Бюджет_млн"))
-                dgvFilms.Columns["Бюджет_млн"].HeaderText = "Бюджет (млн $)";
-            if (dgvFilms.Columns.Contains("Киностудия"))
-                dgvFilms.Columns["Киностудия"].HeaderText = "Киностудия";
+                if (dgvFilms.Columns.Contains("Id"))
+                    dgvFilms.Columns["Id"].HeaderText = "№";
+                if (dgvFilms.Columns.Contains("Title"))
+                    dgvFilms.Columns["Title"].HeaderText = "Название фильма";
+                if (dgvFilms.Columns.Contains("Бюджет_млн"))
+                    dgvFilms.Columns["Бюджет_млн"].HeaderText = "Бюджет (млн $)";
+                if (dgvFilms.Columns.Contains("Киностудия"))
+                    dgvFilms.Columns["Киностудия"].HeaderText = "Киностудия";
+            }
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            var form = new FilmEditForm(_context);
-            if (form.ShowDialog() == DialogResult.OK)
+            using (var context = new AppDbContext())
             {
-                var film = new Film
+                var form = new FilmEditForm(context);
+                if (form.ShowDialog() == DialogResult.OK)
                 {
-                    Title = form.FilmTitle,
-                    BudgetMln = form.BudgetMln,
-                    StudioId = form.SelectedStudioId
-                };
-                _context.Films.Add(film);
-                _context.SaveChanges();
-                LoadData();
+                    var film = new Film
+                    {
+                        Title = form.FilmTitle,
+                        BudgetMln = form.BudgetMln,
+                        StudioId = form.SelectedStudioId
+                    };
+                    context.Films.Add(film);
+                    context.SaveChanges();
+                    LoadData();
+                }
             }
         }
 
@@ -64,24 +67,28 @@ namespace IDZ3
         {
             if (dgvFilms.CurrentRow == null)
             {
-                MessageBox.Show("Выберите фильм для редактирования");
+                MessageBox.Show("Выберите фильм для редактирования", "Ошибка",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             dynamic item = dgvFilms.CurrentRow.DataBoundItem;
             int filmId = item.Id;
 
-            var film = _context.Films.Find(filmId);
-            if (film == null) return;
-
-            var form = new FilmEditForm(_context, film);
-            if (form.ShowDialog() == DialogResult.OK)
+            using (var context = new AppDbContext())
             {
-                film.Title = form.FilmTitle;
-                film.BudgetMln = form.BudgetMln;
-                film.StudioId = form.SelectedStudioId;
-                _context.SaveChanges();
-                LoadData();
+                var film = context.Films.Find(filmId);
+                if (film == null) return;
+
+                var form = new FilmEditForm(context, film);
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    film.Title = form.FilmTitle;
+                    film.BudgetMln = form.BudgetMln;
+                    film.StudioId = form.SelectedStudioId;
+                    context.SaveChanges();
+                    LoadData();
+                }
             }
         }
 
@@ -89,28 +96,30 @@ namespace IDZ3
         {
             if (dgvFilms.CurrentRow == null)
             {
-                MessageBox.Show("Выберите фильм для удаления");
+                MessageBox.Show("Выберите фильм для удаления", "Ошибка",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             dynamic item = dgvFilms.CurrentRow.DataBoundItem;
             int filmId = item.Id;
 
-            var film = _context.Films.Find(filmId);
-            if (film == null) return;
+            var result = MessageBox.Show($"Удалить фильм?", "Подтверждение удаления",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-            if (MessageBox.Show($"Удалить фильм \"{film.Title}\"?", "Подтверждение", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (result == DialogResult.Yes)
             {
-                _context.Films.Remove(film);
-                _context.SaveChanges();
-                LoadData();
+                using (var context = new AppDbContext())
+                {
+                    var film = context.Films.Find(filmId);
+                    if (film != null)
+                    {
+                        context.Films.Remove(film);
+                        context.SaveChanges();
+                        LoadData();
+                    }
+                }
             }
-        }
-
-        protected override void OnFormClosing(FormClosingEventArgs e)
-        {
-            base.OnFormClosing(e);
-            _context.Dispose();
         }
     }
 }

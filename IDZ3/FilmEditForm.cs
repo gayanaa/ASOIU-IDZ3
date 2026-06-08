@@ -7,8 +7,8 @@ namespace IDZ3
 {
     public partial class FilmEditForm : Form
     {
-        private AppDbContext _context;
         private int? _editFilmId;
+        private List<Studio> _studios;
 
         public string FilmTitle => txtTitle.Text.Trim();
         public decimal BudgetMln => numBudget.Value;
@@ -17,28 +17,26 @@ namespace IDZ3
         public FilmEditForm(AppDbContext context)
         {
             InitializeComponent();
-            _context = context;
             Text = "Добавление фильма";
-            LoadStudios();
+            LoadStudios(context);
         }
 
         public FilmEditForm(AppDbContext context, Film film)
         {
             InitializeComponent();
-            _context = context;
             _editFilmId = film.Id;
             Text = "Редактирование фильма";
-            LoadStudios();
+            LoadStudios(context);
 
             txtTitle.Text = film.Title;
             numBudget.Value = film.BudgetMln;
             cmbStudio.SelectedValue = film.StudioId;
         }
 
-        private void LoadStudios()
+        private void LoadStudios(AppDbContext context)
         {
-            var studios = _context.Studios.OrderBy(s => s.Name).ToList();
-            cmbStudio.DataSource = studios;
+            _studios = context.Studios.OrderBy(s => s.Name).ToList();
+            cmbStudio.DataSource = _studios;
             cmbStudio.DisplayMember = "Name";
             cmbStudio.ValueMember = "Id";
         }
@@ -47,19 +45,22 @@ namespace IDZ3
         {
             if (string.IsNullOrWhiteSpace(txtTitle.Text))
             {
-                MessageBox.Show("Введите название фильма!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Введите название фильма!", "Ошибка",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             if (numBudget.Value < 0)
             {
-                MessageBox.Show("Бюджет не может быть отрицательным!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Бюджет не может быть отрицательным!", "Ошибка",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             if (cmbStudio.SelectedItem == null)
             {
-                MessageBox.Show("Выберите киностудию!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Выберите киностудию!", "Ошибка",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 

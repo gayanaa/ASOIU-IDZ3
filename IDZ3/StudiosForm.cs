@@ -1,32 +1,33 @@
-﻿using System;
+﻿using IDZ3.Models;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Windows.Forms;
-using IDZ3.Models;
 
 namespace IDZ3
 {
     public partial class StudiosForm : Form
     {
-        private AppDbContext _context;
-
         public StudiosForm()
         {
             InitializeComponent();
-            _context = new AppDbContext();
             LoadData();
         }
 
         private void LoadData()
         {
-            var studios = _context.Studios.OrderBy(s => s.Id).ToList();
-            dgvStudios.DataSource = studios;
+            using (var context = new AppDbContext())
+            {
+                var studios = context.Studios.OrderBy(s => s.Id).ToList();
+                dgvStudios.DataSource = studios;
 
-            if (dgvStudios.Columns.Contains("Id"))
-                dgvStudios.Columns["Id"].HeaderText = "№";
-            if (dgvStudios.Columns.Contains("Name"))
-                dgvStudios.Columns["Name"].HeaderText = "Название студии";
-            if (dgvStudios.Columns.Contains("Films"))
-                dgvStudios.Columns["Films"].Visible = false;
+                if (dgvStudios.Columns.Contains("Id"))
+                    dgvStudios.Columns["Id"].HeaderText = "№";
+                if (dgvStudios.Columns.Contains("Name"))
+                    dgvStudios.Columns["Name"].HeaderText = "Название студии";
+                if (dgvStudios.Columns.Contains("Films"))
+                    dgvStudios.Columns["Films"].Visible = false;
+            }
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -34,9 +35,12 @@ namespace IDZ3
             var form = new StudioEditForm();
             if (form.ShowDialog() == DialogResult.OK)
             {
-                var studio = new Studio { Name = form.StudioName };
-                _context.Studios.Add(studio);
-                _context.SaveChanges();
+                using (var context = new AppDbContext())
+                {
+                    var studio = new Studio { Name = form.StudioName };
+                    context.Studios.Add(studio);
+                    context.SaveChanges();
+                }
                 LoadData();
             }
         }
@@ -45,17 +49,25 @@ namespace IDZ3
         {
             if (dgvStudios.CurrentRow == null)
             {
-                MessageBox.Show("Выберите студию для редактирования");
+                MessageBox.Show("Выберите студию для редактирования", "Ошибка",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             var studio = (Studio)dgvStudios.CurrentRow.DataBoundItem;
-            var form = new StudioEditForm(studio.Name);
 
+            var form = new StudioEditForm(studio.Name);
             if (form.ShowDialog() == DialogResult.OK)
             {
-                studio.Name = form.StudioName;
-                _context.SaveChanges();
+                using (var context = new AppDbContext())
+                {
+                    var studioToEdit = context.Studios.Find(studio.Id);
+                    if (studioToEdit != null)
+                    {
+                        studioToEdit.Name = form.StudioName;
+                        context.SaveChanges();
+                    }
+                }
                 LoadData();
             }
         }
@@ -64,31 +76,39 @@ namespace IDZ3
         {
             if (dgvStudios.CurrentRow == null)
             {
-                MessageBox.Show("Выберите студию для удаления");
+                MessageBox.Show("Выберите студию для удаления", "Ошибка",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             var studio = (Studio)dgvStudios.CurrentRow.DataBoundItem;
-            _context.Entry(studio).Collection(s => s.Films).Load();
 
-            if (studio.Films.Any())
+            using (var context = new AppDbContext())
             {
-                MessageBox.Show("Нельзя удалить студию, у которой есть фильмы");
-                return;
-            }
+                var studioToDelete = context.Studios
+                    .Include(s => s.Films)
+                    .FirstOrDefault(s => s.Id == studio.Id);
 
-            if (MessageBox.Show($"Удалить студию \"{studio.Name}\"?", "Подтверждение", MessageBoxButtons.YesNo) == DialogResult.Yes)
-            {
-                _context.Studios.Remove(studio);
-                _context.SaveChanges();
-                LoadData();
-            }
-        }
+                if (studioToDelete == null) return;
 
-        protected override void OnFormClosing(FormClosingEventArgs e)
-        {
-            base.OnFormClosing(e);
-            _context.Dispose();
+                if (studioToDelete.Films.Any())
+                {
+                    MessageBox.Show("Нельзя удалить студию, у которой есть фильмы!\n" +
+                        "Сначала удалите все фильмы этой студии.", "Ошибка удаления",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                var result = MessageBox.Show($"Удалить студию \"{studio.Name}\"?",
+                    "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                {
+                    context.Studios.Remove(studioToDelete);
+                    context.SaveChanges();
+                    LoadData();
+                }
+            }
         }
     }
 }
