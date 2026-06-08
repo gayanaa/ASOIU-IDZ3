@@ -2,15 +2,8 @@
 {
     partial class FilmEditForm
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,121 +13,103 @@
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            label1 = new Label();
+            lblTitle = new Label();
             txtTitle = new TextBox();
-            label2 = new Label();
+            lblBudget = new Label();
             numBudget = new NumericUpDown();
-            label3 = new Label();
+            lblStudio = new Label();
             cmbStudio = new ComboBox();
             btnOk = new Button();
             btnCancel = new Button();
             ((System.ComponentModel.ISupportInitialize)numBudget).BeginInit();
             SuspendLayout();
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(219, 58);
-            label1.Name = "label1";
-            label1.Size = new Size(138, 20);
-            label1.TabIndex = 0;
-            label1.Text = "Название фильма:";
-            // 
+
+            // lblTitle
+            lblTitle.AutoSize = true;
+            lblTitle.Location = new Point(30, 30);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Size = new Size(120, 20);
+            lblTitle.Text = "Название фильма:";
+
             // txtTitle
-            // 
-            txtTitle.Location = new Point(219, 81);
+            txtTitle.Location = new Point(30, 60);
             txtTitle.Name = "txtTitle";
-            txtTitle.Size = new Size(184, 27);
-            txtTitle.TabIndex = 1;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(219, 124);
-            label2.Name = "label2";
-            label2.Size = new Size(120, 20);
-            label2.TabIndex = 2;
-            label2.Text = "Бюджет (млн $):";
-            // 
+            txtTitle.Size = new Size(300, 27);
+
+            // lblBudget
+            lblBudget.AutoSize = true;
+            lblBudget.Location = new Point(30, 100);
+            lblBudget.Name = "lblBudget";
+            lblBudget.Size = new Size(130, 20);
+            lblBudget.Text = "Бюджет (млн $):";
+
             // numBudget
-            // 
             numBudget.DecimalPlaces = 2;
-            numBudget.Location = new Point(220, 156);
-            numBudget.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            numBudget.Location = new Point(30, 130);
+            numBudget.Maximum = 10000;
+            numBudget.Minimum = 0;
             numBudget.Name = "numBudget";
-            numBudget.Size = new Size(183, 27);
-            numBudget.TabIndex = 3;
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(219, 204);
-            label3.Name = "label3";
-            label3.Size = new Size(93, 20);
-            label3.TabIndex = 4;
-            label3.Text = "Киностудия:";
-            // 
+            numBudget.Size = new Size(150, 27);
+
+            // lblStudio
+            lblStudio.AutoSize = true;
+            lblStudio.Location = new Point(30, 170);
+            lblStudio.Name = "lblStudio";
+            lblStudio.Size = new Size(90, 20);
+            lblStudio.Text = "Киностудия:";
+
             // cmbStudio
-            // 
-            cmbStudio.FormattingEnabled = true;
-            cmbStudio.Location = new Point(219, 227);
+            cmbStudio.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbStudio.Location = new Point(30, 200);
             cmbStudio.Name = "cmbStudio";
-            cmbStudio.Size = new Size(184, 28);
-            cmbStudio.TabIndex = 5;
-            // 
+            cmbStudio.Size = new Size(300, 28);
+
             // btnOk
-            // 
-            btnOk.Location = new Point(206, 296);
+            btnOk.Location = new Point(80, 250);
             btnOk.Name = "btnOk";
-            btnOk.Size = new Size(94, 29);
-            btnOk.TabIndex = 6;
-            btnOk.Text = "ОК";
+            btnOk.Size = new Size(90, 35);
+            btnOk.Text = "OK";
             btnOk.UseVisualStyleBackColor = true;
-            // 
+            btnOk.Click += btnOk_Click;
+
             // btnCancel
-            // 
-            btnCancel.Location = new Point(318, 296);
+            btnCancel.Location = new Point(200, 250);
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(94, 29);
-            btnCancel.TabIndex = 7;
+            btnCancel.Size = new Size(90, 35);
             btnCancel.Text = "Отмена";
             btnCancel.UseVisualStyleBackColor = true;
-            // 
+            btnCancel.Click += btnCancel_Click;
+
             // FilmEditForm
-            // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(370, 310);
             Controls.Add(btnCancel);
             Controls.Add(btnOk);
             Controls.Add(cmbStudio);
-            Controls.Add(label3);
+            Controls.Add(lblStudio);
             Controls.Add(numBudget);
-            Controls.Add(label2);
+            Controls.Add(lblBudget);
             Controls.Add(txtTitle);
-            Controls.Add(label1);
+            Controls.Add(lblTitle);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "FilmEditForm";
-            Text = "FilmEditForm";
+            StartPosition = FormStartPosition.CenterParent;
+            Text = "Добавление фильма";
             ((System.ComponentModel.ISupportInitialize)numBudget).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
-        #endregion
-
-        private Label label1;
+        private Label lblTitle;
         private TextBox txtTitle;
-        private Label label2;
+        private Label lblBudget;
         private NumericUpDown numBudget;
-        private Label label3;
+        private Label lblStudio;
         private ComboBox cmbStudio;
         private Button btnOk;
         private Button btnCancel;

@@ -2,15 +2,8 @@
 {
     partial class StudiosForm
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,12 +13,6 @@
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             dgvStudios = new DataGridView();
@@ -34,59 +21,60 @@
             btnDelete = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvStudios).BeginInit();
             SuspendLayout();
-            // 
+
             // dgvStudios
-            // 
             dgvStudios.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvStudios.Location = new Point(253, 42);
+            dgvStudios.Location = new Point(30, 30);
             dgvStudios.Name = "dgvStudios";
+            dgvStudios.ReadOnly = true;
+            dgvStudios.AllowUserToAddRows = false;
             dgvStudios.RowHeadersWidth = 51;
-            dgvStudios.Size = new Size(300, 188);
+            dgvStudios.Size = new Size(540, 250);
             dgvStudios.TabIndex = 0;
-            // 
+
             // btnAdd
-            // 
-            btnAdd.Location = new Point(184, 282);
+            btnAdd.Location = new Point(30, 300);
             btnAdd.Name = "btnAdd";
-            btnAdd.Size = new Size(94, 29);
+            btnAdd.Size = new Size(120, 40);
             btnAdd.TabIndex = 1;
             btnAdd.Text = "Добавить";
             btnAdd.UseVisualStyleBackColor = true;
-            // 
+            btnAdd.Click += btnAdd_Click;
+
             // btnEdit
-            // 
-            btnEdit.Location = new Point(351, 282);
+            btnEdit.Location = new Point(200, 300);
             btnEdit.Name = "btnEdit";
-            btnEdit.Size = new Size(94, 29);
+            btnEdit.Size = new Size(120, 40);
             btnEdit.TabIndex = 2;
             btnEdit.Text = "Изменить";
             btnEdit.UseVisualStyleBackColor = true;
-            // 
+            btnEdit.Click += btnEdit_Click;
+
             // btnDelete
-            // 
-            btnDelete.Location = new Point(523, 282);
+            btnDelete.Location = new Point(370, 300);
             btnDelete.Name = "btnDelete";
-            btnDelete.Size = new Size(94, 29);
+            btnDelete.Size = new Size(120, 40);
             btnDelete.TabIndex = 3;
             btnDelete.Text = "Удалить";
             btnDelete.UseVisualStyleBackColor = true;
-            // 
+            btnDelete.Click += btnDelete_Click;
+
             // StudiosForm
-            // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(600, 370);
             Controls.Add(btnDelete);
             Controls.Add(btnEdit);
             Controls.Add(btnAdd);
             Controls.Add(dgvStudios);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
             Name = "StudiosForm";
-            Text = "StudiosForm";
+            StartPosition = FormStartPosition.CenterParent;
+            Text = "Управление киностудиями";
             ((System.ComponentModel.ISupportInitialize)dgvStudios).EndInit();
             ResumeLayout(false);
         }
-
-        #endregion
 
         private DataGridView dgvStudios;
         private Button btnAdd;

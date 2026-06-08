@@ -2,15 +2,8 @@
 {
     partial class StudioEditForm
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,76 +13,65 @@
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            label1 = new Label();
+            lblName = new Label();
             txtName = new TextBox();
             btnOk = new Button();
             btnCancel = new Button();
             SuspendLayout();
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(292, 83);
-            label1.Name = "label1";
-            label1.Size = new Size(130, 20);
-            label1.TabIndex = 0;
-            label1.Text = "Название студии:";
-            // 
+
+            // lblName
+            lblName.AutoSize = true;
+            lblName.Location = new Point(30, 30);
+            lblName.Name = "lblName";
+            lblName.Size = new Size(120, 20);
+            lblName.TabIndex = 0;
+            lblName.Text = "Название студии:";
+
             // txtName
-            // 
-            txtName.Location = new Point(292, 116);
+            txtName.Location = new Point(30, 60);
             txtName.Name = "txtName";
-            txtName.Size = new Size(208, 27);
+            txtName.Size = new Size(250, 27);
             txtName.TabIndex = 1;
-            // 
+
             // btnOk
-            // 
-            btnOk.Location = new Point(292, 159);
+            btnOk.Location = new Point(80, 110);
             btnOk.Name = "btnOk";
-            btnOk.Size = new Size(94, 29);
+            btnOk.Size = new Size(90, 35);
             btnOk.TabIndex = 2;
-            btnOk.Text = "Ок";
+            btnOk.Text = "OK";
             btnOk.UseVisualStyleBackColor = true;
-            // 
+            btnOk.Click += btnOk_Click;  // ← ЭТА СТРОКА ДОБАВЛЕНА
+
             // btnCancel
-            // 
-            btnCancel.Location = new Point(406, 159);
+            btnCancel.Location = new Point(190, 110);
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(94, 29);
+            btnCancel.Size = new Size(90, 35);
             btnCancel.TabIndex = 3;
             btnCancel.Text = "Отмена";
             btnCancel.UseVisualStyleBackColor = true;
-            // 
+            btnCancel.Click += btnCancel_Click;  // ← ЭТА СТРОКА ДОБАВЛЕНА
+
             // StudioEditForm
-            // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(320, 170);
             Controls.Add(btnCancel);
             Controls.Add(btnOk);
             Controls.Add(txtName);
-            Controls.Add(label1);
+            Controls.Add(lblName);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "StudioEditForm";
             StartPosition = FormStartPosition.CenterParent;
-            Text = "StudioEditForm";
+            Text = "Добавление студии";
             ResumeLayout(false);
             PerformLayout();
         }
 
-        #endregion
-
-        private Label label1;
+        private Label lblName;
         private TextBox txtName;
         private Button btnOk;
         private Button btnCancel;
