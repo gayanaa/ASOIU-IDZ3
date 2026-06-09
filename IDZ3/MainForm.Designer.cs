@@ -21,8 +21,12 @@
             pictureBoxLogo = new PictureBox();
             pictureBox2 = new PictureBox();
             label1 = new Label();
+            pictureBoxFlower = new PictureBox();
+            pictureBoxCat = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)pictureBoxLogo).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxFlower).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxCat).BeginInit();
             SuspendLayout();
             // 
             // btnStudios
@@ -89,11 +93,35 @@
             label1.TabIndex = 5;
             label1.Text = "Ахметзянова Гаяна | ИУ5-23Б";
             // 
+            // pictureBoxFlower
+            // 
+            pictureBoxFlower.BackColor = Color.Transparent;
+            pictureBoxFlower.Image = Properties.Resources.IMG_6837;
+            pictureBoxFlower.Location = new Point(495, 12);
+            pictureBoxFlower.Name = "pictureBoxFlower";
+            pictureBoxFlower.Size = new Size(105, 104);
+            pictureBoxFlower.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBoxFlower.TabIndex = 6;
+            pictureBoxFlower.TabStop = false;
+            // 
+            // pictureBoxCat
+            // 
+            pictureBoxCat.BackColor = Color.Transparent;
+            pictureBoxCat.Image = Properties.Resources.IMG_6839;
+            pictureBoxCat.Location = new Point(12, 26);
+            pictureBoxCat.Name = "pictureBoxCat";
+            pictureBoxCat.Size = new Size(120, 114);
+            pictureBoxCat.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBoxCat.TabIndex = 7;
+            pictureBoxCat.TabStop = false;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(612, 570);
+            Controls.Add(pictureBoxCat);
+            Controls.Add(pictureBoxFlower);
             Controls.Add(label1);
             Controls.Add(pictureBox2);
             Controls.Add(pictureBoxLogo);
@@ -107,6 +135,8 @@
             Text = "Управление киностудиями и фильмами";
             ((System.ComponentModel.ISupportInitialize)pictureBoxLogo).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxFlower).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxCat).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -117,5 +147,7 @@
         private PictureBox pictureBoxLogo;
         private PictureBox pictureBox2;
         private Label label1;
+        private PictureBox pictureBoxFlower;
+        private PictureBox pictureBoxCat;
     }
 }

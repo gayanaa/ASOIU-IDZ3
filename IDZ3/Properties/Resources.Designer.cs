@@ -83,6 +83,26 @@ namespace IDZ3.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap IMG_6837 {
+            get {
+                object obj = ResourceManager.GetObject("IMG_6837", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap IMG_6839 {
+            get {
+                object obj = ResourceManager.GetObject("IMG_6839", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap кинохлопушка {
             get {
                 object obj = ResourceManager.GetObject("кинохлопушка", resourceCulture);
